@@ -55,7 +55,7 @@ def delta_hedging(S0, K, T, r, sigma, option_type="call", N=100, trading_cost=0.
     plt.title("Delta Hedging Simulation")
     plt.show()
 
-    return portfolio_value, option_price
+    return portfolio_value, option_price, t
 
 
 # Fetch Stock Data from Yahoo Finance
@@ -82,11 +82,27 @@ st.title("Options Delta Hedging Simulator")
 ticker = st.text_input("Enter Stock Ticker (e.g., AAPL)", "AAPL")
 T = st.number_input("Time to Expiry (Years)", min_value=0.01, max_value=5.0, value=1.0, step=0.01)
 r = st.number_input("Risk-Free Rate (as decimal)", min_value=0.0, max_value=0.1, value=0.05, step=0.001)
-option_type = st.selectbox("Option Type", ["call", "put"], index=0)
 
 if st.button("Run Delta Hedging Simulation"):
     S0, sigma = get_stock_data(ticker)
     K = S0  # At-the-money option
-    portfolio_value, option_price = delta_hedging(S0, K, T, r, sigma, option_type, N=500, trading_cost=0.002)
     
-    st.write(f"### {option_type.capitalize()} Option Price: ${option_price:.2f}")
+    # Run delta hedging for both call and put
+    call_portfolio, call_option_price, t = delta_hedging(S0, K, T, r, sigma, "call", N=500, trading_cost=0.002)
+    put_portfolio, put_option_price, _ = delta_hedging(S0, K, T, r, sigma, "put", N=500, trading_cost=0.002)
+    
+    # Plot results
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(t, call_portfolio, label="Hedged Call Portfolio Value")
+    ax.axhline(call_option_price, color='r', linestyle='--', label="Call Option Price")
+    ax.plot(t, put_portfolio, label="Hedged Put Portfolio Value", linestyle='dotted')
+    ax.axhline(put_option_price, color='b', linestyle='--', label="Put Option Price")
+    ax.set_xlabel("Time to Expiry")
+    ax.set_ylabel("Value")
+    ax.legend()
+    ax.set_title("Delta Hedging Simulation for Call and Put Options")
+    
+    st.pyplot(fig)
+    
+    st.write(f"### Call Option Price: ${call_option_price:.2f}")
+    st.write(f"### Put Option Price: ${put_option_price:.2f}")
