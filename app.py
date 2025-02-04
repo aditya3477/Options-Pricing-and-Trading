@@ -2,6 +2,7 @@ import numpy as np
 import scipy.stats as si
 import matplotlib.pyplot as plt
 import yfinance as yf
+import streamlit as st
 
 # Black-Scholes Option Pricing
 def black_scholes(S, K, T, r, sigma, option_type="call"):
