@@ -88,8 +88,8 @@ if st.button("Run Delta Hedging Simulation"):
     K = S0  # At-the-money option
     
     # Run delta hedging for both call and put
-    call_portfolio, call_option_price, t = delta_hedging(S0, K, T, r, sigma, "call", N=500, trading_cost=0.002)
-    put_portfolio, put_option_price, _ = delta_hedging(S0, K, T, r, sigma, "put", N=500, trading_cost=0.002)
+    call_portfolio, call_option_price, t = delta_hedging(S0, K, T, r, sigma, "call", N=300)
+    put_portfolio, put_option_price, _ = delta_hedging(S0, K, T, r, sigma, "put", N=300)
     
     # Display Call Option Price
     st.write(f"### Call Option Price: ${call_option_price:.2f}")
