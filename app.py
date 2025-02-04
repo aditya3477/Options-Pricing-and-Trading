@@ -91,18 +91,24 @@ if st.button("Run Delta Hedging Simulation"):
     call_portfolio, call_option_price, t = delta_hedging(S0, K, T, r, sigma, "call", N=500, trading_cost=0.002)
     put_portfolio, put_option_price, _ = delta_hedging(S0, K, T, r, sigma, "put", N=500, trading_cost=0.002)
     
-    # Plot results
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(t, call_portfolio, label="Hedged Call Portfolio Value")
-    ax.axhline(call_option_price, color='r', linestyle='--', label="Call Option Price")
-    ax.plot(t, put_portfolio, label="Hedged Put Portfolio Value", linestyle='dotted')
-    ax.axhline(put_option_price, color='b', linestyle='--', label="Put Option Price")
-    ax.set_xlabel("Time to Expiry")
-    ax.set_ylabel("Value")
-    ax.legend()
-    ax.set_title("Delta Hedging Simulation for Call and Put Options")
-    
-    st.pyplot(fig)
-    
+    # Display Call Option Price
     st.write(f"### Call Option Price: ${call_option_price:.2f}")
+    fig_call, ax_call = plt.subplots(figsize=(10, 5))
+    ax_call.plot(t, call_portfolio, label="Hedged Call Portfolio Value")
+    ax_call.axhline(call_option_price, color='r', linestyle='--', label="Call Option Price")
+    ax_call.set_xlabel("Time to Expiry")
+    ax_call.set_ylabel("Value")
+    ax_call.legend()
+    ax_call.set_title("Delta Hedging Simulation for Call Option")
+    st.pyplot(fig_call)
+    
+    # Display Put Option Price
     st.write(f"### Put Option Price: ${put_option_price:.2f}")
+    fig_put, ax_put = plt.subplots(figsize=(10, 5))
+    ax_put.plot(t, put_portfolio, label="Hedged Put Portfolio Value", linestyle='dotted')
+    ax_put.axhline(put_option_price, color='b', linestyle='--', label="Put Option Price")
+    ax_put.set_xlabel("Time to Expiry")
+    ax_put.set_ylabel("Value")
+    ax_put.legend()
+    ax_put.set_title("Delta Hedging Simulation for Put Option")
+    st.pyplot(fig_put)
